@@ -77,7 +77,8 @@ class Analyzer (object):
         self.electronFRD = ROOT.TH2F("electronFRD","electronFR",3,7,50,2,0,2.5) 
         self.muonFR = ROOT.TH2F("muonFR","muonFR",3,5,50,2,0,2.4) 
         self.electronFR = ROOT.TH2F("electronFR","electronFR",3,7,50,2,0,2.5) 
-
+        self.optimize=True
+        
 
     def muonID(self,muon,vertex):
         return True
@@ -283,9 +284,12 @@ class Analyzer (object):
                             self.fillHistos(boxNoID,'fakes',fr1*fr2/((1-fr1)*(1-fr2)))
             if not self.analyze(box):
                 continue
+
+            if not sample.isMC and box.ZZ.mass()>110 and box.ZZ.mass()<150 and self.optimize:
+                continue
             self.fillHistos(box,sample.type,weight)
             if not sample.isMC:
-                if box.ZZ.mass()>110 and box.ZZ.mass()<150:
+                if box.ZZ.mass()>110 and box.ZZ.mass()<150 :
                     self.data.append(box.ZZ.mass())
 #                    print 'EVENT SELECTED:', event.eventAuxiliary().id().run(),event.eventAuxiliary().id().luminosityBlock(),event.eventAuxiliary().id().event()
 
@@ -303,10 +307,12 @@ class Analyzer (object):
         json.dump(info,f)
         f.close()
     
-    def declareHisto(self,name,bins,min,max):
+    def declareHisto(self,name,bins,min,max,xlabel=''):
         for sample in self.samples:
             self.histograms[sample][name]=ROOT.TH1F(sample+'_'+name,name,bins,min,max)
-
+            self.histograms[sample][name].GetXaxis().SetTitle(xlabel)
+            self.histograms[sample][name].GetYaxis().SetTitle('events')
+            
 
 
     def fillHisto(self,name,sample,value,weight = 1):

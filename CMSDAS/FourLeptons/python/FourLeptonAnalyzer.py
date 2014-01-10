@@ -152,9 +152,9 @@ class FourLeptonAnalyzer(Analyzer):
     def declareHistos(self):
         super(FourLeptonAnalyzer,self).declareHistos()
         ###ADD YOUR HISTOGRAMS AFTER THIS LINE AS AbOVE#####
-        self.declareHisto('mass',30,70,150)
-        self.declareHisto('massZ1',20,40,120)
-        self.declareHisto('massZ2',20,4,74)
+        self.declareHisto('mass',30,70,150,"m_{4l} [GeV]")
+        self.declareHisto('massZ1',20,40,120,"m_{Z1} [GeV]")
+        self.declareHisto('massZ2',20,4,74,"m_{Z2} [GeV]")
 
 
     def fillHistos(self,box,sample,weight = 1):

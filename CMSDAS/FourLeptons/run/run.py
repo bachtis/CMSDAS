@@ -5,6 +5,8 @@ from CMSDAS.FourLeptons.FourLeptonAnalyzer  import *
 
 
 analyzer = FourLeptonAnalyzer()
+analyzer.optimize=False
+
 analyzer.declareHistos()
 analyzer.calculateFakeRates(fakeRate)
 
