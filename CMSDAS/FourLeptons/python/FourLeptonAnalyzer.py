@@ -23,8 +23,6 @@ class FourLeptonAnalyzer(Analyzer):
         if (muon.chargedHadronIso()+max(0.0,muon.photonIso()+muon.neutralHadronIso()-0.5*muon.puChargedHadronIso()))/muon.pt()>0.6:
             return False
 
-        if muon.numberOfMatches()<1:
-            return False
 
         if (muon.dB(2)/muon.edB(2))>8:
             return False
@@ -56,7 +54,7 @@ class FourLeptonAnalyzer(Analyzer):
         if not ID:
             return False
 
-        if electron.gsfTrack().trackerExpectedHitsInner().numberOfHits()>0:
+        if electron.gsfTrack().trackerExpectedHitsInner().numberOfHits()>1:
             return False
 
         if (electron.dB(2)/electron.edB(2))>8:
@@ -156,6 +154,7 @@ class FourLeptonAnalyzer(Analyzer):
         super(FourLeptonAnalyzer,self).declareHistos()
         ###ADD YOUR HISTOGRAMS AFTER THIS LINE AS AbOVE#####
         self.declareHisto('mass',30,70,150,"m_{4l} [GeV]")
+        self.declareHisto('massFull',100,70,570,"m_{4l} [GeV]")
         self.declareHisto('massZ1',20,40,120,"m_{Z1} [GeV]")
         self.declareHisto('massZ2',20,4,74,"m_{Z2} [GeV]")
 
@@ -164,6 +163,7 @@ class FourLeptonAnalyzer(Analyzer):
         super(FourLeptonAnalyzer,self).fillHistos(box,sample,weight)
 
         self.fillHisto('mass',sample,box.ZZ.mass(),weight)        
+        self.fillHisto('massFull',sample,box.ZZ.mass(),weight)        
         self.fillHisto('massZ1',sample,box.ZZ.l1.mass(),weight)        
         self.fillHisto('massZ2',sample,box.ZZ.l2.mass(),weight)        
 
