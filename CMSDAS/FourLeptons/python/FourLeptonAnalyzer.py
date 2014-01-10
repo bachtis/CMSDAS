@@ -20,10 +20,13 @@ class FourLeptonAnalyzer(Analyzer):
         if not (muon.isPFMuon() and \
                ( muon.isGlobalMuon() or muon.isTrackerMuon() )):
             return False
-        if (muon.chargedHadronIso()+max(0.0,muon.photonIso()+muon.neutralHadronIso()-0.5*muon.puChargedHadronIso()))/muon.pt()>0.4:
+        if (muon.chargedHadronIso()+max(0.0,muon.photonIso()+muon.neutralHadronIso()-0.5*muon.puChargedHadronIso()))/muon.pt()>0.6:
             return False
 
-        if (muon.dB(2)/muon.edB(2))>4:
+        if muon.numberOfMatches()<1:
+            return False
+
+        if (muon.dB(2)/muon.edB(2))>8:
             return False
 
         return True
@@ -53,14 +56,14 @@ class FourLeptonAnalyzer(Analyzer):
         if not ID:
             return False
 
-        if electron.gsfTrack().trackerExpectedHitsInner().numberOfHits()>1:
+        if electron.gsfTrack().trackerExpectedHitsInner().numberOfHits()>0:
             return False
 
-        if (electron.dB(2)/electron.edB(2))>4:
+        if (electron.dB(2)/electron.edB(2))>8:
             return False
 
 
-        if (electron.chargedHadronIso()+max(0.0,electron.photonIso()+electron.neutralHadronIso()-0.5*electron.puChargedHadronIso()))/electron.pt()>0.4:
+        if (electron.chargedHadronIso()+max(0.0,electron.photonIso()+electron.neutralHadronIso()-0.5*electron.puChargedHadronIso()))/electron.pt()>0.6:
             return False
 
 
@@ -91,7 +94,7 @@ class FourLeptonAnalyzer(Analyzer):
                 continue
             #now create a di lepton object and check mass
             z=DiObject(l1,l2)
-            if not (z.mass()>40 and z.mass()<120):
+            if not (z.mass()>12 and z.mass()<120):
                 continue
             box.zcandidates.append(DiObject(l1,l2))
         # OK if there are more than one Z candidates
@@ -120,20 +123,20 @@ class FourLeptonAnalyzer(Analyzer):
                 continue
             #now create a di lepton object and check mass
             z=DiObject(l1,l2)
-            if not (z.mass()>12 and z.mass()<120):
+            if not (z.mass()>4 and z.mass()<120):
                 continue
             box.zcandidates2.append(DiObject(l1,l2))
         # OK if there are more than one Z candidates
        #pick the one with the highest lepton pt sum
         if len(box.zcandidates2)==0:
             return False
+
+
         
         sortedZ2s=sorted(box.zcandidates2,key=lambda x: x.l1.pt()+x.l2.pt(),reverse=True)
         box.Z2 = sortedZ2s[0]
 
-
-
-        #QCD suppression
+        #kill the candidate if a OS pair has mll<4 GeV
         for l1,l2 in itertools.combinations([box.Z1.l1,box.Z1.l2,box.Z2.l1,box.Z2.l2],2):
             ll =DiObject(l1,l2)
             if (l1.charge()+l2.charge()) ==0:
