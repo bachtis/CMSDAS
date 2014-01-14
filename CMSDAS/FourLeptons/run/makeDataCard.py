@@ -12,7 +12,7 @@ w.factory('MH[126,110,150]')
 w.factory('m4l[126,110,150]')
 w.factory('scale[0.003,0,1]')
 w.factory('resolution[0.2,0,1]')
-w.factory('signal_norm[1]')
+w.factory('ggH_norm[1]')
 
 
 
@@ -30,7 +30,7 @@ w.factory("expr::alphaL('(3521.36524827+(-134.348137936*MH)+(2.04466932799*MH*MH
 
 
 
-pdf    = ROOT.RooDoubleCB('signal','signal',w.var('m4l'),w.function('m0'),w.function('sigma'),w.function('alphaL'),w.function('nL'),w.function('alphaR'),w.function('nR'))
+pdf    = ROOT.RooDoubleCB('ggH','signal',w.var('m4l'),w.function('m0'),w.function('sigma'),w.function('alphaL'),w.function('nL'),w.function('alphaR'),w.function('nR'))
 getattr(w,'importClassCode')(ROOT.RooDoubleCB.Class(),1)
 getattr(w,'import')(pdf)
 
@@ -64,15 +64,15 @@ imax 1 number of bins
 jmax 2 number of processes minus 1
 kmax * number of nuisance parameters
 --------------------------------------------------------- 
-shapes *                simple  workspace.root w:$PROCESS
+shapes *                hzz4l  workspace.root w:$PROCESS
 ---------------------------------------------------------
-bin          simple  
+bin          hzz4l  
 """)
 d.write('observation '+str(len(events)))
 d.write("""
 ---------------------------------------------------------
-bin                   simple  simple  simple  
-process               signal  ZZ      ZX    
+bin                   hzz4l  hzz4l  hzz4l  
+process               ggH    ZZ      ZX    
 process               0       1       2
 """)
 d.write('rate    '+str(info['higgs'])+"  "+str(info['ZZ'])+"   "+str(info['ZX']))
