@@ -102,7 +102,7 @@ class FourLeptonAnalyzer(Analyzer):
 
 
 
-        sortedZs=sorted(box.zcandidates,key=lambda x: abs(x.l1.mass()-91.118))
+        sortedZs=sorted(box.zcandidates,key=lambda x: abs(x.mass()-91.118))
         box.Z1 = sortedZs[0]
         
         #now remove the used leptons from the list and make Z2 pairs

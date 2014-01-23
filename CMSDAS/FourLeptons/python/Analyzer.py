@@ -199,7 +199,7 @@ class Analyzer (object):
                 continue
 
 
-            sortedZs=sorted(box.zcandidates,key=lambda x: abs(x.l1.mass()-91.118))
+            sortedZs=sorted(box.zcandidates,key=lambda x: abs(x.mass()-91.118))
             box.Z1 = sortedZs[0]
             
             box.leptons.remove(box.Z1.l1)        
